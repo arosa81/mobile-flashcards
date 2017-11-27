@@ -1,24 +1,34 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity  } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage  } from 'react-native';
 import { getDecksFlashCards } from '../utils/helpers';
+import { fetchDeckResults } from '../utils/api';
+import { connect } from 'react-redux';
 import Deck from './Deck'
 import DeckHeader from './DeckHeader'
 import { gray } from '../utils/colors';
+import { receiveDecks } from '../actions';
 
 class DeckList extends Component {
+  componentDidMount() {
+    console.log("DECKLIST componentDidMount: ", this.props);
+    fetchDeckResults()
+      .then((decks) => this.props.receiveDecks(JSON.parse(decks)))
+  }
+
   render() {
     const deckInfo = getDecksFlashCards();
+    const { decks } = this.props;
     const { navigate } = this.props.navigation;
     console.log("props", this.props);
     return (
       <View style={styles.container}>
-        {Object.keys(deckInfo).map((key) => {
-          const { title, questions } = deckInfo[key];
+        {Object.keys(decks).map((key) => {
+          const { title, questions } = decks[key];
 
           return (
             <TouchableOpacity key={key} style={styles.deckContainer}
-              onPress={() => navigate('Deck', { deck: deckInfo[key] }) }>
-                <DeckHeader deck={{deck: deckInfo[key]}} />
+              onPress={() => navigate('Deck', { deck: decks[key] }) }>
+                <DeckHeader deck={decks[key]} />
             </TouchableOpacity>
           )
         })}
@@ -47,7 +57,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'transparent',
     borderBottomColor: '#bbb',
-    borderBottomWidth: StyleSheet.hairlineWidth
   },
   deckTitle: {
     fontSize: 32,
@@ -57,4 +66,10 @@ const styles = StyleSheet.create({
   }
 })
 
-export default DeckList;
+function mapStateToProps (decks) {
+  return {
+    decks
+  }
+}
+
+export default connect(mapStateToProps, { receiveDecks })(DeckList);

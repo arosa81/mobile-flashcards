@@ -1,15 +1,19 @@
-import React from 'react';
-import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, Platform, StatusBar, AsyncStorage } from 'react-native';
 import DeckList from './components/DeckList';
 import Deck from './components/Deck'
 import NewDeck from './components/NewDeck';
+import NewCard from './components/NewCard';
 import { StackNavigator, TabNavigator } from 'react-navigation';
 import { white, purple } from './utils/colors';
+import { getDecksFlashCards } from './utils/helpers';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Constants } from 'expo';
-import { CreateStore } from 'redux';
+import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers';
+
+export const UDACICARDS_STORAGE_KEY = 'udaciCards:decks';
 
 function DeckStatusBar ({ backgroundColor, ...props}) {
   return (
@@ -62,11 +66,25 @@ const MainNavigator = StackNavigator({
     navigationOptions: {
       headerTitle: 'Deck',
     },
-  }
+  },
+  NewCard: {
+    screen: NewCard,
+    navigationOptions: {
+      tabBarLabel: 'Add Card',
+    }
+  },
 })
 
-export default class App extends React.Component {
+initializeData = () => {
+  const deckInfo = getDecksFlashCards();
+
+  AsyncStorage.setItem(UDACICARDS_STORAGE_KEY, JSON.stringify(deckInfo));
+}
+
+class App extends Component {
+
   render() {
+    console.log("APP: ", this.props)
     return (
       <Provider store={createStore(reducer)}>
         <View style={styles.container}>
@@ -83,3 +101,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+export default App;

@@ -15,3 +15,10 @@ export function addDeck (deck) {
     deck,
   }
 }
+
+export function addCard (card) {
+  return {
+    type: ADD_CARD,
+    card,
+  }
+}

@@ -1,24 +1,22 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import DeckHeader from './DeckHeader';
-import { white, purple } from '../utils/colors';
+import { white, purple, gray } from '../utils/colors';
 
 class Deck extends Component {
   render() {
-    const { state } = this.props.navigation
-    console.log("eeee", state);
+    const { navigation } = this.props;
+    console.log("eeee", this.props);
     return (
       <View style={styles.container}>
-        <DeckHeader deck={state.params}/>
-        <View style={styles.container}>
-          <TouchableOpacity style={styles.iosSubmitBtn}>
-            <Text>Add Card</Text>
+        <DeckHeader deck={navigation.state.params.deck}/>
+          <TouchableOpacity style={styles.iosSubmitBtn}
+            onPress={() => navigation.navigate('NewCard', { title: navigation.state.params.deck.title })}>
+            <Text style={styles.buttonText}>Add Card</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iosSubmitBtn}>
-            <Text>Start Quiz</Text>
+            <Text style={styles.buttonText}>Start Quiz</Text>
           </TouchableOpacity>
-          <Text>{state.params.deck.title}</Text>
-        </View>
       </View>
     )
   }
@@ -26,45 +24,49 @@ class Deck extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonGroup: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   deckContainer: {
     padding: 10,
     borderRadius: 7,
     marginLeft: 30,
     marginRight: 30,
-    alignItems: 'center',
+    height: 100,
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
     borderBottomColor: '#bbb',
-    borderBottomWidth: StyleSheet.hairlineWidth
   },
   deckTitle: {
     fontSize: 32,
   },
-  iosSubmitBtn: {
-  backgroundColor: purple,
-  padding: 10,
-  borderRadius: 7,
-  height: 45,
-  marginLeft: 40,
-  marginRight: 40,
+  deckSubtitle: {
+    color: gray,
   },
-  androidSubmitBtn: {
+  iosSubmitBtn: {
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: purple,
     padding: 10,
-    paddingLeft: 30,
-    paddingRight: 30,
+    borderRadius: 7,
     height: 45,
-    borderRadius: 2,
-    alignSelf: 'flex-end',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: 100,
+    marginBottom: 20,
   },
+  androidSubmitBtn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: purple,
+    padding: 10,
+    height: 45,
+    width: 100,
+    borderRadius: 2,
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: white,
+  }
 })
 
 export default Deck;
