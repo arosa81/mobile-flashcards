@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage  } from 'react-native';
 import { getDecksFlashCards } from '../utils/helpers';
-import { fetchDeckResults } from '../utils/api';
+import { fetchDeckResultsAsyncStorage } from '../utils/api';
 import { connect } from 'react-redux';
 import Deck from './Deck'
 import DeckHeader from './DeckHeader'
@@ -11,7 +11,7 @@ import { receiveDecks } from '../actions';
 class DeckList extends Component {
   componentDidMount() {
     console.log("DECKLIST componentDidMount: ", this.props);
-    fetchDeckResults()
+    fetchDeckResultsAsyncStorage()
       .then((decks) => this.props.receiveDecks(JSON.parse(decks)))
   }
 

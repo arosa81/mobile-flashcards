@@ -11,10 +11,11 @@ class Deck extends Component {
       <View style={styles.container}>
         <DeckHeader deck={navigation.state.params.deck}/>
           <TouchableOpacity style={styles.iosSubmitBtn}
-            onPress={() => navigation.navigate('NewCard', { title: navigation.state.params.deck.title })}>
+            onPress={() => navigation.navigate('NewCard', { deck: navigation.state.params.deck })}>
             <Text style={styles.buttonText}>Add Card</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iosSubmitBtn}>
+          <TouchableOpacity style={styles.iosSubmitBtn}
+            onPress={() => navigation.navigate('Quiz', { deck: navigation.state.params.deck })}>
             <Text style={styles.buttonText}>Start Quiz</Text>
           </TouchableOpacity>
       </View>

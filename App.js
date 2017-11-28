@@ -4,6 +4,7 @@ import DeckList from './components/DeckList';
 import Deck from './components/Deck'
 import NewDeck from './components/NewDeck';
 import NewCard from './components/NewCard';
+import Quiz from './components/Quiz';
 import { StackNavigator, TabNavigator } from 'react-navigation';
 import { white, purple } from './utils/colors';
 import { getDecksFlashCards } from './utils/helpers';
@@ -71,6 +72,12 @@ const MainNavigator = StackNavigator({
     screen: NewCard,
     navigationOptions: {
       tabBarLabel: 'Add Card',
+    }
+  },
+  Quiz: {
+    screen: Quiz,
+    navigationOptions: {
+      tabBarLabel: 'Quiz',
     }
   },
 })

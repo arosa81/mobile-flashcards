@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity  } from 'react-native';
 import { getDecksFlashCards } from '../utils/helpers';
 import Deck from './Deck';
 import { gray } from '../utils/colors';
+import { fetchDeckResultsAsyncStorage } from '../utils/api';
 
 class DeckHeader extends Component {
   render() {
     const { deck } = this.props;
-    console.log("DECKHEADER props", deck);
+    console.log("DECKHEADER props", this.props);
+    console.log("DECKHEADER DECK props", deck);
     return (
       <View style={styles.container}>
         <Text style={styles.deckTitle}>{deck.title}</Text>

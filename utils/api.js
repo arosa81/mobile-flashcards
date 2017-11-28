@@ -1,12 +1,19 @@
 import { AsyncStorage } from 'react-native';
 import { UDACICARDS_STORAGE_KEY } from '../App';
 
-export function fetchDeckResults () {
+export function fetchDeckResultsAsyncStorage () {
   return AsyncStorage.getItem(UDACICARDS_STORAGE_KEY)
 }
 
-export function mergeCard ({ entry, key }) {
-  return AsyncStorage.mergeItem(UDACICARDS_STORAGE_KEY, JSON.stringify({
-    [key]: entry,
-  }))
+export function addCardToDeckAsyncStorage (key, entry) {
+  return AsyncStorage.getItem(UDACICARDS_STORAGE_KEY)
+        .then((response) => {
+          let deck = JSON.parse(response);
+          console.log("INSIDE: ", deck);
+          deck[key] = {
+            title: key,
+            questions: deck[key].questions.concat(entry)
+          }
+          AsyncStorage.setItem(UDACICARDS_STORAGE_KEY, JSON.stringify(deck))
+        })
 }
