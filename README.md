@@ -8,8 +8,8 @@ From Udacity:
 Install and run the app: https://github.com/arosa81/mobile-flashcards.git
 
 In your terminal:
-1 git clone https://github.com/arosa81/mobile-flashcards.git
-1 cd mobile-flashcards
-1 npm install OR yarn install
-1 npm start OR yarn start
-1 type 'i' to open in an iOS simulator
+1. git clone https://github.com/arosa81/mobile-flashcards.git
+2. cd mobile-flashcards
+3. npm install OR yarn install
+4. npm start OR yarn start
+5. type 'i' to open in an iOS simulator
