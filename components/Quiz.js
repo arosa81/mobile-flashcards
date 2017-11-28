@@ -44,7 +44,6 @@ class Quiz extends Component {
   render() {
     const { deck} = this.props.navigation.state.params;
     const { answer, score, questionNum, done, spinQuestion } = this.state;
-    console.log("Quiz: ", this.props, this.state, deck.questions.length)
     if (deck.questions.length === 0) {
       return (
         <View style={styles.container}>

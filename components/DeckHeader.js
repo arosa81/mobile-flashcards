@@ -8,8 +8,6 @@ import { fetchDeckResultsAsyncStorage } from '../utils/api';
 class DeckHeader extends Component {
   render() {
     const { deck } = this.props;
-    console.log("DECKHEADER props", this.props);
-    console.log("DECKHEADER DECK props", deck);
     return (
       <View style={styles.container}>
         <Text style={styles.deckTitle}>{deck.title}</Text>

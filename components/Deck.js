@@ -6,7 +6,6 @@ import { white, navy, gray } from '../utils/colors';
 class Deck extends Component {
   render() {
     const { navigation } = this.props;
-    console.log("eeee", this.props);
     return (
       <View style={styles.container}>
         <DeckHeader deck={navigation.state.params.deck}/>

@@ -9,7 +9,6 @@ export function addCardToDeckAsyncStorage (key, entry) {
   return AsyncStorage.getItem(UDACICARDS_STORAGE_KEY)
         .then((response) => {
           let deck = JSON.parse(response);
-          console.log("INSIDE: ", deck);
           deck[key] = {
             title: key,
             questions: deck[key].questions.concat(entry)
