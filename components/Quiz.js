@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import DeckHeader from './DeckHeader';
+import NewCard from './NewCard';
 import { white, purple, red, green } from '../utils/colors';
 
 class Quiz extends Component {
@@ -40,6 +41,14 @@ class Quiz extends Component {
     const { deck} = this.props.navigation.state.params;
     const { answer, score, questionNum, done, spinQuestion } = this.state;
     console.log("Quiz: ", this.props, this.state, deck.questions.length)
+    if (deck.questions.length === 0) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.deckTitle}>You need to have questions to play.</Text>
+          <Text style={styles.deckTitle}>Please go back and add some :)</Text>
+        </View>
+      )
+    } else {
     return (
       <View style={styles.container}>
         <Text style={{flex: 1, alignSelf:'flex-start'}}>{questionNum} / {deck.questions.length}</Text>
@@ -72,8 +81,7 @@ class Quiz extends Component {
           </View>
         }
       </View>
-
-    )
+    )}
   }
 }
 
