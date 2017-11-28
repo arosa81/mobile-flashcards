@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import DeckHeader from './DeckHeader';
-import { white, purple, gray } from '../utils/colors';
+import { white, navy, gray } from '../utils/colors';
 
 class Deck extends Component {
   render() {
@@ -10,14 +10,16 @@ class Deck extends Component {
     return (
       <View style={styles.container}>
         <DeckHeader deck={navigation.state.params.deck}/>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.iosSubmitBtn}
-            onPress={() => navigation.navigate('NewCard', { deck: navigation.state.params.deck })}>
+          onPress={() => navigation.navigate('NewCard', { deck: navigation.state.params.deck })}>
             <Text style={styles.buttonText}>Add Card</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iosSubmitBtn}
-            onPress={() => navigation.navigate('Quiz', { deck: navigation.state.params.deck })}>
+          onPress={() => navigation.navigate('Quiz', { deck: navigation.state.params.deck })}>
             <Text style={styles.buttonText}>Start Quiz</Text>
           </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -26,18 +28,16 @@ class Deck extends Component {
 const styles = StyleSheet.create({
   container: {
     flex:1,
+    marginTop: 100,
     alignItems: 'center',
     justifyContent: 'center'
   },
-  deckContainer: {
-    padding: 10,
+  buttonContainer: {
+    flex: 1,
+    marginBottom: 100,
     borderRadius: 7,
-    marginLeft: 30,
-    marginRight: 30,
-    height: 100,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     backgroundColor: 'transparent',
-    borderBottomColor: '#bbb',
   },
   deckTitle: {
     fontSize: 32,
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   iosSubmitBtn: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: purple,
+    backgroundColor: navy,
     padding: 10,
     borderRadius: 7,
     height: 45,
@@ -56,14 +56,15 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   androidSubmitBtn: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: purple,
+    backgroundColor: navy,
     padding: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
     height: 45,
-    width: 100,
     borderRadius: 2,
-    marginBottom: 20,
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonText: {
     color: white,
