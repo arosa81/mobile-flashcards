@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,
+import { View, Text, StyleSheet, Platform,
          TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 import { addCard } from '../actions';
-import { fetchDeckResultsAsyncStorage, addCardToDeckAsyncStorage } from '../utils/api'
+import { addCardToDeckAsyncStorage } from '../utils/api'
+import { navy, white, red } from '../utils/colors';
 
 class NewCard extends Component {
   state = {
     question: '',
     answer: '',
+    invalidQuestion: false,
+    invalidAnswer: false,
   }
 
   handleQuestionChange = (question) => {
@@ -22,22 +25,57 @@ class NewCard extends Component {
   submit = () => {
     const { navigation, addCard } = this.props;
     const key = navigation.state.params.deck.title;
-    const entry = this.state;
-    addCardToDeckAsyncStorage(key, entry);
-    addCard(key, entry);
-    navigation.goBack();
+    const { question, answer, validQuestion, validAnswer } = this.state;
+    switch (question.length) {
+      case 0:
+        this.setState({ invalidQuestion: true });
+        break;
+      default:
+        this.setState({ invalidQuestion: false });
+    }
+    
+    switch (answer.length) {
+      case 0:
+        this.setState({ invalidAnswer: true });
+        break;
+      default:
+        this.setState({ invalidAnswer: false });
+    }
+
+    if (question !== '' && answer !== '') {
+      addCardToDeckAsyncStorage(key, { question, answer });
+      addCard(key, { question, answer });
+      navigation.goBack();
+    }
   }
 
   render() {
-    console.log("NEW CARD: ", this.state, this.props);
+    const { question, answer, invalidQuestion, invalidAnswer } = this.state;
+
     return (
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
-        <Text>NewDeck</Text>
-        <TextInput value={this.state.question} placeholder='Enter a question to ask'
+        <TextInput style={styles.input}
+                   value={question}
+                   placeholder='Enter a question to ask'
                    onChangeText={this.handleQuestionChange} />
-        <TextInput value={this.state.answer} placeholder='Enter the answer to your question'
+        {invalidQuestion === true && <Text style={styles.invalidMessage}>
+          Please enter a question</Text>}
+        <TextInput style={styles.input}
+                   value={answer}
+                   placeholder='Enter the answer to your question'
                    onChangeText={this.handleAnswerChange} />
-        <TouchableOpacity onPress={() => this.submit()}><Text>Submit</Text></TouchableOpacity>
+        {invalidAnswer === true && <Text style={styles.invalidMessage}>
+          Please enter an answer</Text>}
+        {Platform.OS === 'ios'
+          ? <TouchableOpacity style={styles.iosSubmitBtn}
+              onPress={() => this.submit()}>
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
+          : <TouchableOpacity style={styles.androidSubmitBtn}
+              onPress={() => this.submit()}>
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
+        }
       </KeyboardAvoidingView>
     )
   }
@@ -48,7 +86,43 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
+  input: {
+    height: 44,
+    width: 300,
+    padding: 8,
+    borderColor: navy,
+    borderWidth: 1,
+    margin: 20
+  },
+  iosSubmitBtn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: navy,
+    padding: 10,
+    borderRadius: 7,
+    height: 45,
+    width: 100,
+    marginBottom: 20,
+  },
+  androidSubmitBtn: {
+    backgroundColor: navy,
+    padding: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    height: 45,
+    borderRadius: 2,
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: white,
+  },
+  invalidMessage: {
+    color: red,
+    marginBottom: 10,
+  },
 })
 
 export default connect(null, { addCard })(NewCard);

@@ -8,7 +8,11 @@ import { navy, white, red } from '../utils/colors';
 class NewDeck extends Component {
   state = {
     deckTitle: '',
-    validTitle: false,
+    invalidTitle: false,
+  }
+
+  componentDidMount () {
+    this.setState({ invalidTitle: false });
   }
 
   handleTitleChange = (deckTitle) => {
@@ -18,10 +22,9 @@ class NewDeck extends Component {
   submit = (deckTitle) => {
     const { validTitle } = this.state;
     if (deckTitle === '') {
-      console.log("nothing was added to deck title");
-      this.setState({ validTitle: true });
-      return;
+      this.setState({ invalidTitle: true });
     } else {
+      this.setState({ invalidTitle: false });
       const { navigation, addDeck } = this.props;
       const newDeck = {
         [deckTitle]: {
@@ -36,15 +39,15 @@ class NewDeck extends Component {
   }
 
   render() {
-    const { deckTitle, validTitle } = this.state;
-    console.log("NEW DECK: ", this.state, this.props);
+    const { deckTitle, invalidTitle } = this.state;
     return (
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
-        <TextInput required style={styles.input}
+        <TextInput style={styles.input}
                    value={this.state.deckTitle}
                    placeholder='Enter a deck title'
                    onChangeText={this.handleTitleChange} />
-        {validTitle === true && <Text style={styles.invalidMessage}>Please enter a deck title</Text>}
+        {invalidTitle === true &&
+          <Text style={styles.invalidMessage}>Please enter a deck title</Text>}
         {Platform.OS === 'ios'
           ? <TouchableOpacity style={styles.iosSubmitBtn}
               onPress={() => this.submit(deckTitle)}>
