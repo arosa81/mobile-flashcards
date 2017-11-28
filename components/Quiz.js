@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import DeckHeader from './DeckHeader';
 import NewCard from './NewCard';
 import { white, purple, red, green } from '../utils/colors';
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers';
 
 class Quiz extends Component {
   state = {
@@ -25,7 +26,10 @@ class Quiz extends Component {
     const { questionNum } = this.state;
 
     if ((questions.length - 1) === this.state.questionNum) {
-      this.setState({ done: !this.state.done })
+      this.setState({ done: !this.state.done });
+
+      clearLocalNotification()
+      .then(setLocalNotification)
     }
 
     if (correct === 'Correct') {
@@ -60,7 +64,7 @@ class Quiz extends Component {
                 : deck.questions[questionNum].answer}
             </Text>
             <Text style={styles.questionHelper}
-              onPress={this.checkAnswer}>{answer === false ? '>>Answer' : '>>Question'}</Text>
+              onPress={this.checkAnswer}>{answer === false ? '>>Answer' : '<<Question'}</Text>
             <TouchableOpacity style={styles.iosCorrectBtn}
               onPress={() => this.submit('Correct')}>
               <Text style={styles.buttonText}>Correct</Text>
@@ -106,7 +110,9 @@ const styles = StyleSheet.create({
   questionHelper: {
     color: red,
     alignSelf: 'center',
+    padding: 10,
     marginBottom: 20,
+    fontWeight: 'bold',
   },
   iosCorrectBtn: {
     alignItems: 'center',

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Platform, StatusBar, AsyncStorage } from 'react
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducer from './reducers';
-import { getDecksFlashCards } from './utils/helpers';
+import { getDecksFlashCards, setLocalNotification } from './utils/helpers';
 import { white, navy } from './utils/colors';
 import DeckList from './components/DeckList';
 import Deck from './components/Deck'
@@ -103,7 +103,12 @@ initializeData = () => {
   AsyncStorage.setItem(UDACICARDS_STORAGE_KEY, JSON.stringify(deckInfo));
 }
 
-class App extends Component {
+export default class App extends React.Component {
+  componentDidMount() {
+    initializeData();
+    setLocalNotification();
+  }
+
   render() {
     return (
       <Provider store={createStore(reducer)}>
@@ -119,9 +124,5 @@ class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
 });
-
-export default App;

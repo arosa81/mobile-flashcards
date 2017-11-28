@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage, ScrollView } from 'react-native';
-import { getDecksFlashCards } from '../utils/helpers';
 import { fetchDeckResultsAsyncStorage } from '../utils/api';
 import { connect } from 'react-redux';
 import Deck from './Deck'
@@ -15,7 +14,6 @@ class DeckList extends Component {
   }
 
   render() {
-    const deckInfo = getDecksFlashCards();
     const { decks } = this.props;
     const { navigate } = this.props.navigation;
     return (
@@ -24,7 +22,7 @@ class DeckList extends Component {
           const { title, questions } = decks[key];
 
           return (
-            <TouchableOpacity key={key} 
+            <TouchableOpacity key={key}
               onPress={() => navigate('Deck', { deck: decks[key] }) }>
                 <DeckHeader deck={decks[key]} />
             </TouchableOpacity>
