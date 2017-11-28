@@ -33,6 +33,8 @@ export function getDecksFlashCards (deck) {
   return typeof deck === 'undefined' ? info : info[deck];
 }
 
+/* Citing Udacity react native program for the notification reminder approach below */
+
 export function getDailyReminderValue () {
   return {
     today: 'Don\'t forget to study your cards today!'
