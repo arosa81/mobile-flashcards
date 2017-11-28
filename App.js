@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Platform, StatusBar, AsyncStorage } from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import reducer from './reducers';
+import { getDecksFlashCards } from './utils/helpers';
+import { white, navy } from './utils/colors';
 import DeckList from './components/DeckList';
 import Deck from './components/Deck'
 import NewDeck from './components/NewDeck';
 import NewCard from './components/NewCard';
 import Quiz from './components/Quiz';
 import { StackNavigator, TabNavigator } from 'react-navigation';
-import { white, purple } from './utils/colors';
-import { getDecksFlashCards } from './utils/helpers';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Constants } from 'expo';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import reducer from './reducers';
 
 export const UDACICARDS_STORAGE_KEY = 'udaciCards:decks';
 
@@ -36,17 +36,20 @@ const Tabs = TabNavigator({
     screen: NewDeck,
     navigationOptions: {
       tabBarLabel: 'NEW DECK',
-      tabBarIcon: ({ tintColor }) => <Ionicons name='ios-paper' size={30} color={tintColor} />
+      tabBarIcon: ({ tintColor }) => Platform.OS === 'ios'
+        ? <Ionicons name='ios-add-circle-outline' size={30} color={tintColor} />
+        : <Ionicons name='md-add' size={30} color={tintColor} />
     }
   },
-},{
+}, {
   navigationOptions: {
     header: null
-  }, tabBarOptions: {
-    activeTintColor: Platform.OS === 'ios' ? purple : white,
+  },
+  tabBarOptions: {
+    activeTintColor: Platform.OS === 'ios' ? navy : white,
     style: {
       height: 50,
-      backgroundColor: Platform.OS === 'ios' ? white : purple,
+      backgroundColor: Platform.OS === 'ios' ? white : navy,
       shadowColor: 'rgba(0, 0, 0, 0.24)',
       shadowOffset: {
         width: 0,
@@ -66,18 +69,30 @@ const MainNavigator = StackNavigator({
     screen: Deck,
     navigationOptions: {
       headerTitle: 'Deck',
-    },
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: navy,
+      }
+    }
   },
   NewCard: {
     screen: NewCard,
     navigationOptions: {
       tabBarLabel: 'Add Card',
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: navy,
+      }
     }
   },
   Quiz: {
     screen: Quiz,
     navigationOptions: {
       tabBarLabel: 'Quiz',
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: navy,
+      }
     }
   },
 })
@@ -89,13 +104,11 @@ initializeData = () => {
 }
 
 class App extends Component {
-
   render() {
-    console.log("APP: ", this.props)
     return (
       <Provider store={createStore(reducer)}>
         <View style={styles.container}>
-          <DeckStatusBar backgroundColor={purple} barStyle='light-content' />
+          <DeckStatusBar backgroundColor={navy} barStyle='light-content' />
           <MainNavigator />
         </View>
       </Provider>
@@ -106,6 +119,8 @@ class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
 });
 

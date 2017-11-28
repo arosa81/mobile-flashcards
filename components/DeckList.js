@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage  } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage, ScrollView } from 'react-native';
 import { getDecksFlashCards } from '../utils/helpers';
 import { fetchDeckResultsAsyncStorage } from '../utils/api';
 import { connect } from 'react-redux';
@@ -10,7 +10,6 @@ import { receiveDecks } from '../actions';
 
 class DeckList extends Component {
   componentDidMount() {
-    console.log("DECKLIST componentDidMount: ", this.props);
     fetchDeckResultsAsyncStorage()
       .then((decks) => this.props.receiveDecks(JSON.parse(decks)))
   }
@@ -19,20 +18,19 @@ class DeckList extends Component {
     const deckInfo = getDecksFlashCards();
     const { decks } = this.props;
     const { navigate } = this.props.navigation;
-    console.log("props", this.props);
     return (
-      <View style={styles.container}>
+      <ScrollView>
         {Object.keys(decks).map((key) => {
           const { title, questions } = decks[key];
 
           return (
-            <TouchableOpacity key={key} style={styles.deckContainer}
+            <TouchableOpacity key={key} 
               onPress={() => navigate('Deck', { deck: decks[key] }) }>
                 <DeckHeader deck={decks[key]} />
             </TouchableOpacity>
           )
         })}
-      </View>
+      </ScrollView>
     )
   }
 }
@@ -41,19 +39,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignSelf: 'center',
-    justifyContent: 'center'
-  },
-  row: {
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center',
   },
   deckContainer: {
-    padding: 10,
+    marginBottom: 10,
     borderRadius: 7,
     marginLeft: 30,
     marginRight: 30,
-    height: 100,
     justifyContent: 'center',
     backgroundColor: 'transparent',
     borderBottomColor: '#bbb',

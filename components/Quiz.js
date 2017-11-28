@@ -12,6 +12,8 @@ class Quiz extends Component {
   }
 
   checkAnswer = () => {
+    const { answer, opacityQuestion, opacityAnswer } = this.state;
+
     this.setState({
       answer: !this.state.answer,
     })
@@ -28,7 +30,7 @@ class Quiz extends Component {
     }
 
     if (correct === 'Correct') {
-      this.setState({ score: this.state.score + 1 })
+      this.setState({ score: this.state.score + 1, answer: false, })
     }
 
     this.setState({
@@ -37,19 +39,21 @@ class Quiz extends Component {
   }
 
   render() {
-    const { questions } = this.props.navigation.state.params.deck;
-    const { answer, score, questionNum, done } = this.state;
-    console.log("Quiz: ", this.props, this.state);
+    const { deck} = this.props.navigation.state.params;
+    const { answer, score, questionNum, done, spinQuestion } = this.state;
     return (
       <View style={styles.container}>
-      {console.log("Quiz: ", this.props, this.state, questions.length)}
+      {console.log("Quiz: ", this.props, this.state, deck.questions.length)}
         {!done ?
           <View style={styles.deckContainer}>
-            <Text>{questionNum} / {questions.length}</Text>
-            <Text style={{ marginBottom: 50 }}>Score: {score}</Text>
-            <Text style={styles.deckTitle}>{questions[questionNum].question}</Text>
+            <Text>{questionNum} / {deck.questions.length}</Text>
+            <Text style={styles.deckTitle}>
+              {answer === false
+                ? deck.questions[questionNum].question
+                : deck.questions[questionNum].answer}
+            </Text>
             <Text style={styles.questionHelper}
-              onPress={this.checkAnswer}>{answer ? '>>Answer' : '>>Question'}</Text>
+              onPress={this.checkAnswer}>{answer === false ? '>>Answer' : '>>Question'}</Text>
             <TouchableOpacity style={styles.iosCorrectBtn}
               onPress={() => this.submit('Correct')}>
               <Text style={styles.buttonText}>Correct</Text>
@@ -62,7 +66,7 @@ class Quiz extends Component {
           :
           <View style={styles.deckContainer}>
             <Text style={styles.deckTitle}>Congrats! You are done!</Text>
-            <Text style={styles.questionHelper}>Score: {score}</Text>
+            <Text style={styles.questionHelper}>Score: {(score/deck.questions.length) * 100}%</Text>
             <TouchableOpacity style={styles.iosSubmitBtn}
               onPress={() => this.props.navigation.navigate('Home')}>
               <Text style={styles.buttonText}>Go Home</Text>
@@ -96,7 +100,8 @@ const styles = StyleSheet.create({
   },
   deckTitle: {
     fontSize: 32,
-    alignSelf: 'center',
+    textAlign: 'center',
+    justifyContent: 'center',
   },
   questionHelper: {
     color: red,
