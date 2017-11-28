@@ -23,8 +23,6 @@ class Quiz extends Component {
     const { questions } = this.props.navigation.state.params.deck;
     const { questionNum } = this.state;
 
-    console.log("IN SUBMIT: ", questions.length, this.state.questionNum);
-
     if ((questions.length - 1) === this.state.questionNum) {
       this.setState({ done: !this.state.done })
     }
@@ -41,12 +39,12 @@ class Quiz extends Component {
   render() {
     const { deck} = this.props.navigation.state.params;
     const { answer, score, questionNum, done, spinQuestion } = this.state;
+    console.log("Quiz: ", this.props, this.state, deck.questions.length)
     return (
       <View style={styles.container}>
-      {console.log("Quiz: ", this.props, this.state, deck.questions.length)}
+        <Text style={{flex: 1, alignSelf:'flex-start'}}>{questionNum} / {deck.questions.length}</Text>
         {!done ?
           <View style={styles.deckContainer}>
-            <Text>{questionNum} / {deck.questions.length}</Text>
             <Text style={styles.deckTitle}>
               {answer === false
                 ? deck.questions[questionNum].question
@@ -73,7 +71,6 @@ class Quiz extends Component {
             </TouchableOpacity>
           </View>
         }
-
       </View>
 
     )
@@ -82,21 +79,16 @@ class Quiz extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   deckContainer: {
+    flex: 0,
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
-    borderRadius: 7,
-    marginLeft: 30,
-    marginRight: 30,
-    height: 100,
-    justifyContent: 'center',
     backgroundColor: 'transparent',
-    borderBottomColor: '#bbb',
+    paddingBottom: 100,
   },
   deckTitle: {
     fontSize: 32,
