@@ -17,14 +17,18 @@ class Quiz extends Component {
     })
   }
 
-  submit = () => {
+  submit = (correct) => {
     const { questions } = this.props.navigation.state.params.deck;
     const { questionNum } = this.state;
 
+    console.log("IN SUBMIT: ", questions.length, this.state.questionNum);
+
     if ((questions.length - 1) === this.state.questionNum) {
-      this.setState({
-        done: !this.state.done
-      })
+      this.setState({ done: !this.state.done })
+    }
+
+    if (correct === 'Correct') {
+      this.setState({ score: this.state.score + 1 })
     }
 
     this.setState({
@@ -41,22 +45,24 @@ class Quiz extends Component {
       {console.log("Quiz: ", this.props, this.state, questions.length)}
         {!done ?
           <View style={styles.deckContainer}>
+            <Text>{questionNum} / {questions.length}</Text>
+            <Text style={{ marginBottom: 50 }}>Score: {score}</Text>
             <Text style={styles.deckTitle}>{questions[questionNum].question}</Text>
             <Text style={styles.questionHelper}
               onPress={this.checkAnswer}>{answer ? '>>Answer' : '>>Question'}</Text>
             <TouchableOpacity style={styles.iosCorrectBtn}
-              onPress={this.submit}>
+              onPress={() => this.submit('Correct')}>
               <Text style={styles.buttonText}>Correct</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.iosIncorrectBtn}
-              onPress={() => console.log("Incorrect")}>
+              onPress={this.submit}>
               <Text style={styles.buttonText}>Incorrect</Text>
             </TouchableOpacity>
           </View>
           :
           <View style={styles.deckContainer}>
             <Text style={styles.deckTitle}>Congrats! You are done!</Text>
-            <Text style={styles.questionHelper}>{score}</Text>
+            <Text style={styles.questionHelper}>Score: {score}</Text>
             <TouchableOpacity style={styles.iosSubmitBtn}
               onPress={() => this.props.navigation.navigate('Home')}>
               <Text style={styles.buttonText}>Go Home</Text>
@@ -74,9 +80,11 @@ const styles = StyleSheet.create({
   container: {
     flex:1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   deckContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 10,
     borderRadius: 7,
     marginLeft: 30,
@@ -93,6 +101,7 @@ const styles = StyleSheet.create({
   questionHelper: {
     color: red,
     alignSelf: 'center',
+    marginBottom: 20,
   },
   iosCorrectBtn: {
     alignItems: 'center',
