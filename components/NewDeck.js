@@ -33,7 +33,7 @@ class NewDeck extends Component {
         }
       }
       addDeck(newDeck);
-      navigation.navigate('Home', { deck: newDeck[deckTitle]});
+      navigation.navigate('Deck', { deck: newDeck[deckTitle]});
       this.setState({ validTitle: false });
     }
   }
