@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import DeckHeader from './DeckHeader';
 import NewCard from './NewCard';
-import { white, purple, red, green } from '../utils/colors';
+import { white, navy, red, green } from '../utils/colors';
 import { clearLocalNotification, setLocalNotification } from '../utils/helpers';
 
 class Quiz extends Component {
@@ -77,14 +77,28 @@ class Quiz extends Component {
           <View style={styles.deckContainer}>
             <Text style={styles.deckTitle}>Congrats! You are done!</Text>
             <Text style={styles.questionHelper}>Score: {(score/deck.questions.length) * 100}%</Text>
-            <TouchableOpacity style={styles.iosSubmitBtn}
-              onPress={() => this.props.navigation.navigate('Quiz', { deck: deck })}>
-              <Text style={styles.buttonText}>Restart Quiz</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.iosSubmitBtn}
-              onPress={() => this.props.navigation.navigate('Deck', { deck: deck })}>
-              <Text style={styles.buttonText}>Back To Deck</Text>
-            </TouchableOpacity>
+            {Platform.OS === 'ios'
+              ? <View>
+                  <TouchableOpacity style={styles.iosSubmitBtn}
+                    onPress={() => this.props.navigation.navigate('Quiz', { deck: deck })}>
+                    <Text style={styles.buttonText}>Restart Quiz</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.iosSubmitBtn}
+                    onPress={() => this.props.navigation.navigate('Deck', { deck: deck })}>
+                    <Text style={styles.buttonText}>Back To Deck</Text>
+                  </TouchableOpacity>
+                </View>
+              : <View>
+                  <TouchableOpacity style={styles.androidSubmitBtn}
+                    onPress={() => this.props.navigation.navigate('Quiz', { deck: deck })}>
+                    <Text style={styles.buttonText}>Restart Quiz</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.androidSubmitBtn}
+                    onPress={() => this.props.navigation.navigate('Deck', { deck: deck })}>
+                    <Text style={styles.buttonText}>Back To Deck</Text>
+                  </TouchableOpacity>
+                </View>
+            }
           </View>
         }
       </View>
@@ -140,12 +154,23 @@ const styles = StyleSheet.create({
   iosSubmitBtn: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: purple,
+    backgroundColor: navy,
     padding: 10,
     borderRadius: 7,
     height: 45,
     width: 100,
     marginBottom: 20,
+  },
+  androidSubmitBtn: {
+    backgroundColor: navy,
+    padding: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    height: 45,
+    borderRadius: 2,
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonText: {
     color: white,
