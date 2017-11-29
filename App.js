@@ -77,6 +77,7 @@ const MainNavigator = StackNavigator({
   },
   NewCard: {
     screen: NewCard,
+    Back: 'Deck',
     navigationOptions: {
       tabBarLabel: 'Add Card',
       headerTintColor: white,

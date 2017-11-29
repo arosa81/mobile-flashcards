@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Platform,
          TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native';
+import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux';
 import { addCard } from '../actions';
 import { addCardToDeckAsyncStorage } from '../utils/api'
@@ -22,6 +23,7 @@ class NewCard extends Component {
     this.setState({ answer });
   }
 
+
   submit = () => {
     const { navigation, addCard } = this.props;
     const key = navigation.state.params.deck.title;
@@ -33,7 +35,7 @@ class NewCard extends Component {
       default:
         this.setState({ invalidQuestion: false });
     }
-    
+
     switch (answer.length) {
       case 0:
         this.setState({ invalidAnswer: true });
@@ -51,7 +53,7 @@ class NewCard extends Component {
 
   render() {
     const { question, answer, invalidQuestion, invalidAnswer } = this.state;
-
+    console.log("NEW CARD: ", this.props, this.state);
     return (
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
         <TextInput style={styles.input}

@@ -2,7 +2,7 @@ import React from 'react';
 import { AsyncStorage } from 'react-native';
 import { Notifications, Permissions } from 'expo';
 
-const NOTIFICATION_KEY = 'udaciCards:notifications';
+export const NOTIFICATION_KEY = 'udaciCards:notifications';
 
 export function getDecksFlashCards (deck) {
   const info = {
@@ -73,11 +73,12 @@ export function setLocalNotification() {
               Notifications.cancelAllScheduledNotificationsAsync();
 
               let tomorrow = new Date();
-              tomorrow.setDate(tomorrow.getDate() + 1);
-              tomorrow.setHours(20);
-              tomorrow.setMinutes(0);
+              tomorrow.setMinutes(tomorrow.getMinutes() + 1)
+              // tomorrow.setDate(tomorrow.getDate() + 1);
+              // tomorrow.setHours(20);
+              // tomorrow.setMinutes(0);
 
-              Notifications.scheduleLocalNotificationAsync(
+              expo.Notifications.scheduleLocalNotificationAsync(
                 createNotification(),
                 {
                   time: tomorrow,

@@ -1,21 +1,27 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { receiveDecks } from '../actions';
+import { fetchDeckResultsAsyncStorage } from '../utils/api';
 import DeckHeader from './DeckHeader';
 import { white, navy, gray } from '../utils/colors';
 
 class Deck extends Component {
+
   render() {
-    const { navigation } = this.props;
+    const { deck, navigation } = this.props;
+    console.log("DECK: ", this.props);
     return (
       <View style={styles.container}>
-        <DeckHeader deck={navigation.state.params.deck}/>
+        <DeckHeader deck={deck}/>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.iosSubmitBtn}
-          onPress={() => navigation.navigate('NewCard', { deck: navigation.state.params.deck })}>
+          onPress={() => navigation.navigate('NewCard',
+            { deck: deck })}>
             <Text style={styles.buttonText}>Add Card</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iosSubmitBtn}
-          onPress={() => navigation.navigate('Quiz', { deck: navigation.state.params.deck })}>
+          onPress={() => navigation.navigate('Quiz', { deck: deck })}>
             <Text style={styles.buttonText}>Start Quiz</Text>
           </TouchableOpacity>
         </View>
@@ -70,4 +76,12 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Deck;
+function mapStateToProps (decks, ownProps) {
+  const { deck } = ownProps.navigation.state.params;
+
+  return {
+    deck: decks[deck.title]
+  }
+}
+
+export default connect(mapStateToProps, { receiveDecks })(Deck);
