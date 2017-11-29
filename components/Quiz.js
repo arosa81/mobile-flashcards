@@ -44,7 +44,8 @@ class Quiz extends Component {
   render() {
     const { deck} = this.props.navigation.state.params;
     const { answer, score, questionNum, done, spinQuestion } = this.state;
-    if (deck.questions.length === 0) {
+    let deckLength = deck.questions.length;
+    if (deckLength === 0) {
       return (
         <View style={styles.container}>
           <Text style={styles.deckTitle}>You need to have questions to play.</Text>
@@ -54,7 +55,7 @@ class Quiz extends Component {
     } else {
     return (
       <View style={styles.container}>
-        <Text style={{flex: 1, alignSelf:'flex-start'}}>{questionNum} / {deck.questions.length}</Text>
+        <Text style={styles.cardNumPage}>{questionNum} / {deckLength}</Text>
         {!done ?
           <View style={styles.deckContainer}>
             <Text style={styles.deckTitle}>
@@ -76,7 +77,7 @@ class Quiz extends Component {
           :
           <View style={styles.deckContainer}>
             <Text style={styles.deckTitle}>Congrats! You are done!</Text>
-            <Text style={styles.questionHelper}>Score: {(score/deck.questions.length) * 100}%</Text>
+            <Text style={styles.questionHelper}>Score: {(score/deckLength) * 100}%</Text>
             {Platform.OS === 'ios'
               ? <View>
                   <TouchableOpacity style={styles.iosSubmitBtn}
@@ -158,22 +159,24 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 7,
     height: 45,
-    width: 100,
     marginBottom: 20,
   },
   androidSubmitBtn: {
-    backgroundColor: navy,
-    padding: 10,
-    paddingLeft: 30,
-    paddingRight: 30,
-    height: 45,
-    borderRadius: 2,
-    alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: navy,
+    padding: 10,
+    marginBottom: 20,
+    height: 45,
+    borderRadius: 2,
   },
   buttonText: {
     color: white,
+  },
+  cardNumPage: {
+    flex: 1,
+    alignSelf:'flex-start',
+    padding: 10
   }
 })
 
