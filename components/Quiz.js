@@ -78,8 +78,12 @@ class Quiz extends Component {
             <Text style={styles.deckTitle}>Congrats! You are done!</Text>
             <Text style={styles.questionHelper}>Score: {(score/deck.questions.length) * 100}%</Text>
             <TouchableOpacity style={styles.iosSubmitBtn}
-              onPress={() => this.props.navigation.navigate('Home')}>
-              <Text style={styles.buttonText}>Go Home</Text>
+              onPress={() => this.props.navigation.navigate('Quiz', { deck: deck })}>
+              <Text style={styles.buttonText}>Restart Quiz</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iosSubmitBtn}
+              onPress={() => this.props.navigation.navigate('Deck', { deck: deck })}>
+              <Text style={styles.buttonText}>Back To Deck</Text>
             </TouchableOpacity>
           </View>
         }

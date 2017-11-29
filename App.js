@@ -68,7 +68,7 @@ const MainNavigator = StackNavigator({
   Deck: {
     screen: Deck,
     navigationOptions: {
-      headerTitle: 'Deck',
+      title: 'DECK',
       headerTintColor: white,
       headerStyle: {
         backgroundColor: navy,
@@ -79,7 +79,7 @@ const MainNavigator = StackNavigator({
     screen: NewCard,
     Back: 'Deck',
     navigationOptions: {
-      tabBarLabel: 'Add Card',
+      title: 'Add Card',
       headerTintColor: white,
       headerStyle: {
         backgroundColor: navy,
@@ -89,7 +89,7 @@ const MainNavigator = StackNavigator({
   Quiz: {
     screen: Quiz,
     navigationOptions: {
-      tabBarLabel: 'Quiz',
+      title: 'Quiz',
       headerTintColor: white,
       headerStyle: {
         backgroundColor: navy,
