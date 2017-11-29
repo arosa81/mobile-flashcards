@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingLeft: 30,
     paddingRight: 30,
+    marginRight: 30,
     height: 45,
     borderRadius: 2,
     alignSelf: 'flex-end',
